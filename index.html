@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body class="bg-slate-100">
+
+<div class="min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-teal-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold">School Manager</h1>
+            <div class="flex gap-4">
+                <button onclick="showSection('dashboard')" class="hover:bg-teal-700 px-3 py-1 rounded">Dashboard</button>
+                <button onclick="showSection('students')" class="hover:bg-teal-700 px-3 py-1 rounded">Students</button>
+                <button onclick="showSection('teachers')" class="hover:bg-teal-700 px-3 py-1 rounded">Teachers</button>
+                <button onclick="showSection('inventory')" class="hover:bg-teal-700 px-3 py-1 rounded">Inventory</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">Total Students</h3>
+                    <p class="text-3xl text-teal-600" id="studentCount">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">Total Teachers</h3>
+                    <p class="text-3xl text-teal-600" id="teacherCount">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-bold mb-2">Items Distributed</h3>
+                    <p class="text-3xl text-teal-600" id="itemCount">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Students Section -->
+        <section id="students" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-4">Add Student</h2>
+                <form id="studentForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="Name" class="border p-2 rounded" id="studentName" required>
+                    <input type="number" placeholder="Age" class="border p-2 rounded" id="studentAge" required>
+                    <input type="text" placeholder="Class" class="border p-2 rounded" id="studentClass" required>
+                    <input type="text" placeholder="Parent Contact" class="border p-2 rounded" id="parentContact" required>
+                    <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700 md:col-span-2">Add Student</button>
+                </form>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-4">Students List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="p-2">Name</th>
+                                <th class="p-2">Age</th>
+                                <th class="p-2">Class</th>
+                                <th class="p-2">Parent Contact</th>
+                                <th class="p-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Teachers Section -->
+        <section id="teachers" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-4">Add Teacher</h2>
+                <form id="teacherForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" placeholder="Name" class="border p-2 rounded" id="teacherName" required>
+                    <input type="text" placeholder="Subject" class="border p-2 rounded" id="teacherSubject" required>
+                    <input type="email" placeholder="Email" class="border p-2 rounded" id="teacherEmail" required>
+                    <input type="tel" placeholder="Contact" class="border p-2 rounded" id="teacherContact" required>
+                    <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700 md:col-span-2">Add Teacher</button>
+                </form>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-4">Teachers List</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="p-2">Name</th>
+                                <th class="p-2">Subject</th>
+                                <th class="p-2">Email</th>
+                                <th class="p-2">Contact</th>
+                                <th class="p-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teachersList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Inventory Section -->
+        <section id="inventory" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-4">Add Item Distribution</h2>
+                <form id="inventoryForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <select id="studentSelect" class="border p-2 rounded" required>
+                        <option value="">Select Student</option>
+                    </select>
+                    <input type="text" placeholder="Item Name" class="border p-2 rounded" id="itemName" required>
+                    <input type="number" placeholder="Quantity" class="border p-2 rounded" id="itemQuantity" required>
+                    <input type="date" class="border p-2 rounded" id="distributionDate" required>
+                    <button type="submit" class="bg-teal-600 text-white py-2 px-4 rounded hover:bg-teal-700 md:col-span-2">Add Distribution</button>
+                </form>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-bold mb-4">Distribution History</h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full table-auto">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="p-2">Student</th>
+                                <th class="p-2">Item</th>
+                                <th class="p-2">Quantity</th>
+                                <th class="p-2">Date</th>
+                                <th class="p-2">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="inventoryList"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+// Initialize data storage
+let students = JSON.parse(localStorage.getItem('students')) || [];
+let teachers = JSON.parse(localStorage.getItem('teachers')) || [];
+let inventory = JSON.parse(localStorage.getItem('inventory')) || [];
+
+// Navigation
+function showSection(sectionId) {
+    document.querySelectorAll('main section').forEach(section => {
+        section.classList.add('hidden');
+    });
+    document.getElementById(sectionId).classList.remove('hidden');
+    updateDashboard();
+    if(sectionId === 'inventory') {
+        updateStudentSelect();
+    }
+}
+
+// Dashboard updates
+function updateDashboard() {
+    document.getElementById('studentCount').textContent = students.length;
+    document.getElementById('teacherCount').textContent = teachers.length;
+    document.getElementById('itemCount').textContent = inventory.length;
+}
+
+// Students Management
+document.getElementById('studentForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const student = {
+        id: Date.now(),
+        name: document.getElementById('studentName').value,
+        age: document.getElementById('studentAge').value,
+        class: document.getElementById('studentClass').value,
+        contact: document.getElementById('parentContact').value
+    };
+    students.push(student);
+    localStorage.setItem('students', JSON.stringify(students));
+    document.getElementById('studentForm').reset();
+    updateStudentsList();
+    updateDashboard();
+});
+
+function updateStudentsList() {
+    const list = document.getElementById('studentsList');
+    list.innerHTML = '';
+    students.forEach(student => {
+        list.innerHTML += `
+            <tr class="border-b">
+                <td class="p-2">${student.name}</td>
+                <td class="p-2">${student.age}</td>
+                <td class="p-2">${student.class}</td>
+                <td class="p-2">${student.contact}</td>
+                <td class="p-2">
+                    <button onclick="deleteStudent(${student.id})" class="text-red-600 hover:text-red-800">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function deleteStudent(id) {
+    students = students.filter(student => student.id !== id);
+    localStorage.setItem('students', JSON.stringify(students));
+    updateStudentsList();
+    updateDashboard();
+}
+
+// Teachers Management
+document.getElementById('teacherForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const teacher = {
+        id: Date.now(),
+        name: document.getElementById('teacherName').value,
+        subject: document.getElementById('teacherSubject').value,
+        email: document.getElementById('teacherEmail').value,
+        contact: document.getElementById('teacherContact').value
+    };
+    teachers.push(teacher);
+    localStorage.setItem('teachers', JSON.stringify(teachers));
+    document.getElementById('teacherForm').reset();
+    updateTeachersList();
+    updateDashboard();
+});
+
+function updateTeachersList() {
+    const list = document.getElementById('teachersList');
+    list.innerHTML = '';
+    teachers.forEach(teacher => {
+        list.innerHTML += `
+            <tr class="border-b">
+                <td class="p-2">${teacher.name}</td>
+                <td class="p-2">${teacher.subject}</td>
+                <td class="p-2">${teacher.email}</td>
+                <td class="p-2">${teacher.contact}</td>
+                <td class="p-2">
+                    <button onclick="deleteTeacher(${teacher.id})" class="text-red-600 hover:text-red-800">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function deleteTeacher(id) {
+    teachers = teachers.filter(teacher => teacher.id !== id);
+    localStorage.setItem('teachers', JSON.stringify(teachers));
+    updateTeachersList();
+    updateDashboard();
+}
+
+// Inventory Management
+function updateStudentSelect() {
+    const select = document.getElementById('studentSelect');
+    select.innerHTML = '<option value="">Select Student</option>';
+    students.forEach(student => {
+        select.innerHTML += `<option value="${student.id}">${student.name}</option>`;
+    });
+}
+
+document.getElementById('inventoryForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const item = {
+        id: Date.now(),
+        studentId: document.getElementById('studentSelect').value,
+        studentName: students.find(s => s.id == document.getElementById('studentSelect').value).name,
+        itemName: document.getElementById('itemName').value,
+        quantity: document.getElementById('itemQuantity').value,
+        date: document.getElementById('distributionDate').value
+    };
+    inventory.push(item);
+    localStorage.setItem('inventory', JSON.stringify(inventory));
+    document.getElementById('inventoryForm').reset();
+    updateInventoryList();
+    updateDashboard();
+});
+
+function updateInventoryList() {
+    const list = document.getElementById('inventoryList');
+    list.innerHTML = '';
+    inventory.forEach(item => {
+        list.innerHTML += `
+            <tr class="border-b">
+                <td class="p-2">${item.studentName}</td>
+                <td class="p-2">${item.itemName}</td>
+                <td class="p-2">${item.quantity}</td>
+                <td class="p-2">${item.date}</td>
+                <td class="p-2">
+                    <button onclick="deleteInventoryItem(${item.id})" class="text-red-600 hover:text-red-800">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+function deleteInventoryItem(id) {
+    inventory = inventory.filter(item => item.id !== id);
+    localStorage.setItem('inventory', JSON.stringify(inventory));
+    updateInventoryList();
+    updateDashboard();
+}
+
+// Initial load
+showSection('dashboard');
+updateStudentsList();
+updateTeachersList();
+updateInventoryList();
+</script>
+
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
